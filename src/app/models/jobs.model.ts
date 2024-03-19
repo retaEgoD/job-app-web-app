@@ -1,13 +1,18 @@
+import { getPool } from '../../config/db';
+import Logger from '../../config/logger';
+// import { ResultSetHeader } from 'mysql2';
 
 
-const viewAll = async (): Promise<> => {
-Logger.info('Getting films...');
-const conn = await getPool().getConnection();
-const query = "SELECT * FROM job_applications";
-Logger.info(query);
-// const searchTermBind = (typeof searchTerm !== 'undefined') ? '%' + searchTerm + '%' : undefined;
-// const binds = [searchTermBind, searchTermBind, genreIds, ageRatings, directorId, reviewerId].filter(x => x !== undefined);
-const [rows] = await conn.query(query, []);
-await conn.release();
-return rows;
+
+const viewAll = async (userId: number): Promise<Job[]> => {
+        Logger.info(`Getting all jobs for user ${userId}...`);
+        const conn = await getPool().getConnection();
+        const query = "SELECT * FROM job_applications WHERE userId = ?";
+        Logger.info(query);
+        const binds = [userId];
+        const [rows] = await conn.query(query, binds);
+        await conn.release();
+        return rows;
 }
+
+export { viewAll }

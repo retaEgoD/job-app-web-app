@@ -1,6 +1,6 @@
 import dotenv from 'dotenv';
 import {connect, getPool} from "./config/db";
-import express from 'express';
+import express from './config/express';
 import Logger from "./config/logger";
 
 // const userRoutes = require('./routes/user');
@@ -16,11 +16,6 @@ async function main() {
     // app.use('/user', userRoutes);
     app.get('/', (req, res) => {
         res.send('<h1>Hello, this works. AAAAAAAAAAAAAAA<h1>');
-        // const sql = "SELECT * FROM user";
-        // pool.query(sql, (err: any, data: any) => {
-        //     if(err) return "error";
-        //     res.send(data);
-        // })
     });
 
     const port = process.env.port
@@ -32,4 +27,3 @@ async function main() {
 };
 
 main();
-
