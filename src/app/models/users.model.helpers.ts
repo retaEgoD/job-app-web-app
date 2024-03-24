@@ -35,7 +35,11 @@ const getUser = async (userId: number): Promise<User> => {
 }
 
 
-const checkAuth = async (auth: string): Promise<boolean> => {
+const getIdByAuth = async (auth: string | undefined): Promise<number> => {
+
+    if (typeof auth === 'undefined') {
+        return -1;
+    }
 
     Logger.info(`Checking authorisation request...`);
     const connection = getPool().getConnection();
@@ -44,11 +48,11 @@ const checkAuth = async (auth: string): Promise<boolean> => {
     await connection.release();
 
     if (result.length === 0) {
-        return false;
+        return -1;
     }
-    return true;
+    return result[0].user_id;
 
 }
 
 
-export { getUserIdByEmail, getUser, checkAuth }
+export { getUserIdByEmail, getUser, getIdByAuth }

@@ -40,4 +40,18 @@ const login = async (userId: number, password: string): Promise<string> => {
 
 }
 
-export { register, login };
+const logout = async (userId: number): Promise<void> => {
+
+    Logger.info(`Logging out user with id ${userId}...`);
+    const query = 'UPDATE user\n'
+                + 'SET auth_token = NULL\n'
+                + 'WHERE user_id = ?;';
+    const connection = await getPool().getConnection();
+    const [result] = await connection.query(query, [userId]);
+    await connection.release();
+    
+    Logger.info(`Logged out user with id ${userId}.`);
+
+}
+
+export { register, login, logout };

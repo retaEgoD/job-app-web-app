@@ -1,5 +1,7 @@
+import dotenv from 'dotenv';
 import { createPool } from "mysql2";
 import Logger from './logger'
+dotenv.config()
 
 const state = {
     pool: null as any

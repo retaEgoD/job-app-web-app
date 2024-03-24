@@ -1,5 +1,6 @@
 import Logger from "../../config/logger";
 import { Request, Response } from "express";
+import { getIdByAuth } from "../models/users.model.helpers";
 import Ajv from 'ajv';
 
 const ajv = new Ajv({removeAdditional: 'all', strict: false});
@@ -63,14 +64,15 @@ const checkJSON = async (schema: object, data: any, res: Response): Promise<bool
 }
 
 
-const checkAuth = async (req: Request, res: Response): Promise<boolean> => {
+const checkAuth = async (req: Request): Promise<boolean> => {
 
-    const auth = req.get('X-Authorisation') {
-        if (!checkAuth(auth)) {
-            
-        }
+    const auth = req.get('X-Authorisation');
+    if (await getIdByAuth(auth) === -1) {
+        return false;
+    }
+    return true;
 }
 
 
 
-export { validate, sendStatus, sendError, sendInternalError, checkJSON }
+export { validate, sendStatus, sendError, sendInternalError, checkJSON, checkAuth }
